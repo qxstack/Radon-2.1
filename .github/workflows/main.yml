@@ -1,0 +1,32 @@
+name: Radon-2.1
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+
+      - name: Build Radon-2.1
+        run: ./gradlew build
+
+      - name: Upload Radon-2.1.jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: Radon-2.1
+          path: build/libs/*.jar
